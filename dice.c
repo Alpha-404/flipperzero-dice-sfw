@@ -6,7 +6,7 @@
 #include <input/input.h>
 #include <dolphin/dolphin.h>
 #include "dice_icons.h"
-#include "applications/settings/desktop_settings/desktop_settings_app.h"
+//#include "applications/settings/desktop_settings/desktop_settings_app.h"
 
 #define TAG "Dice Roller"
 
@@ -23,7 +23,7 @@ typedef struct {
 typedef struct {
     FuriMutex* mutex;
     FuriMessageQueue* event_queue;
-    DesktopSettings* desktop_settings;
+    //DesktopSettings* desktop_settings;
     FuriHalRtcDateTime datetime;
     uint8_t diceSelect;
     uint8_t diceQty;
@@ -388,7 +388,7 @@ static void dice_render_callback(Canvas* const canvas, void* ctx) {
             canvas_draw_str_aligned(canvas, 64, 26, AlignCenter, AlignCenter, state->strings[2]);
             canvas_draw_str_aligned(canvas, 64, 34, AlignCenter, AlignCenter, state->strings[3]);
         } else if(state->diceSelect == 228 || state->diceSelect == 229) {
-            canvas_set_font(canvas, FontBatteryPercent);
+            //canvas_set_font(canvas, FontBatteryPercent);
             canvas_draw_str_aligned(canvas, 64, 20, AlignCenter, AlignCenter, state->strings[1]);
             canvas_set_font(canvas, FontSecondary);
             canvas_draw_str_aligned(canvas, 64, 8, AlignCenter, AlignCenter, state->strings[0]);
@@ -441,17 +441,17 @@ static void dice_render_callback(Canvas* const canvas, void* ctx) {
         elements_button_right(canvas, "d100");
     } else if(state->diceSelect == 229) {
         elements_button_right(canvas, "8BALL");
-    } else if(state->diceSelect == 228) {
+    } /*else if(state->diceSelect == 228) {
         elements_button_right(canvas, "DBALL");
     } else if(state->diceSelect == 230) {
         elements_button_right(canvas, "SEX");
-    } else if(state->diceSelect == 231) {
+    }*/ else if(state->diceSelect == 231) {
         elements_button_right(canvas, "WAR");
-    } else if(state->diceSelect == 232) {
+    }/* else if(state->diceSelect == 232) {
         elements_button_right(canvas, "WEED");
     } else if(state->diceSelect == 233) {
         elements_button_right(canvas, "DRINK");
-    }
+    }*/
 }
 
 static void dice_state_init(DiceState* const state) {
@@ -463,7 +463,7 @@ static void dice_state_init(DiceState* const state) {
     state->playerOneScore = 0;
     state->playerTwoScore = 0;
     state->letsRoll = false;
-    state->desktop_settings = malloc(sizeof(DesktopSettings));
+    //state->desktop_settings = malloc(sizeof(DesktopSettings));
 }
 
 static void dice_tick(void* ctx) {
@@ -503,7 +503,7 @@ int32_t dice_app(void* p) {
         return 255;
     }
 
-    DESKTOP_SETTINGS_LOAD(plugin_state->desktop_settings);
+    //DESKTOP_SETTINGS_LOAD(plugin_state->desktop_settings);
 
     ViewPort* view_port = view_port_alloc();
     view_port_draw_callback_set(view_port, dice_render_callback, plugin_state);
@@ -543,18 +543,14 @@ int32_t dice_app(void* p) {
                         } else if(plugin_state->diceSelect == 20) {
                             plugin_state->diceSelect = 100;
                         } else if(plugin_state->diceSelect == 100) {
-                            if(plugin_state->desktop_settings->is_dumbmode) {
-                                plugin_state->diceSelect = 231;
-                            } else {
-                                plugin_state->diceSelect = 230;
-                            }
+                            plugin_state->diceSelect = 231; // force dumbmode
                         } else if(plugin_state->diceSelect == 230) {
                             plugin_state->playerOneScore = 0;
                             plugin_state->playerTwoScore = 0;
                             plugin_state->diceSelect = 231;
                         } else if(plugin_state->diceSelect == 231) {
                             plugin_state->diceSelect = 229;
-                        } else if(plugin_state->diceSelect == 229) {
+                        } /*else if(plugin_state->diceSelect == 229) {
                             plugin_state->diceSelect = 228;
                         } else if(plugin_state->diceSelect == 228) {
                             if(plugin_state->desktop_settings->is_dumbmode) {
@@ -566,7 +562,7 @@ int32_t dice_app(void* p) {
                             plugin_state->diceSelect = 233;
                         } else if(plugin_state->diceSelect == 233) {
                             plugin_state->diceSelect = 59;
-                        } else if(plugin_state->diceSelect == 59) {
+                        } */else if(plugin_state->diceSelect == 59) {
                             plugin_state->diceSelect = 69;
                         } else {
                             plugin_state->diceSelect = 2;
@@ -606,7 +602,7 @@ int32_t dice_app(void* p) {
     view_port_free(view_port);
     furi_message_queue_free(plugin_state->event_queue);
     furi_mutex_free(plugin_state->mutex);
-    free(plugin_state->desktop_settings);
+    //free(plugin_state->desktop_settings);
     free(plugin_state);
     return 0;
 }
