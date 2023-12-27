@@ -1,4 +1,4 @@
-<img src="https://github.com/Alpha-404/flipperzero-dice-sfw/blob/main/strong.gif?raw=true" width="40%"></a>
+<img src="https://github.com/Alpha-404/flipperzero-dice-sfw/blob/main/strong.mov.gif?raw=true" width="40%"></a>
 
 # Dice (By RogueMaster, sanitized and bleachd by alpha-404)
 - Displays roll date/time on each roll
